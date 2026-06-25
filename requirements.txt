@@ -1,0 +1,8 @@
+pandas
+numpy
+tensorflow
+nltk
+bleach
+emoji
+scikit-learn
+jupyter

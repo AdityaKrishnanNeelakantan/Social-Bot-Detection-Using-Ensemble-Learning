@@ -1,0 +1,9 @@
+The features you've described from the image can be categorized as multimodal to some extent. While they are all derived from textual data like tweets, they can be considered multimodal because they incorporate information from different modalities within the text data itself.
+
+Here's how:
+
+Textual content: This feature analyzes the actual words and phrases used in the tweet, capturing the semantics and linguistic style. This is a purely unimodal feature, relying solely on the textual content.
+Speed of sharing posts: This feature looks at the time difference between tweets, potentially indicating automated behavior from bots. It uses the textual timestamps within the tweets, making it also unimodal.
+Interaction with other users: This feature analyzes mentions, replies, retweets, and likes, capturing the tweet's engagement on the platform. While it uses textual data like usernames and hashtags, it infers non-linguistic information about the tweet's social interaction, making it partially multimodal.
+Location: This feature considers whether the tweet includes location information. It's purely unimodal, relying on textual location data within the tweet.
+Overall, while some features like textual content and sharing speed rely solely on the textual modality, others like interaction with users infer non-linguistic information from the text, making them partially multimodal.

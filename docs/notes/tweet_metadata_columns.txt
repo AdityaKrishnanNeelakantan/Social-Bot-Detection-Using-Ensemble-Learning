@@ -1,0 +1,8 @@
+1.num_hashtags
+2.num_urls
+3. truncated
+4.in_reply_to_status_id OR in_reply_to_user_id
+5.retweet_count
+6.favorite_count
+7.geo(if present)
+8.place (if present)

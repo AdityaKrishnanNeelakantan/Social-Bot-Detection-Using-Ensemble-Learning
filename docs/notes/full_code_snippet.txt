@@ -1,0 +1,57 @@
+    def preprocess_text_data(input_file_path, output_file_path):
+        # Read the CSV file
+        df = pd.read_csv(input_file_path, low_memory=False)
+        # Lowercase text
+        df["text"] = df["text"].astype(str)
+        df["text"] = df["text"].str.lower()
+        # Remove punctuation and special characters
+        def clean_text(text):
+            text = re.sub(r"[^a-zA-Z0-9\s]", "", text)
+            return text
+        df["text"] = df["text"].apply(clean_text)
+        # Removal of stop words
+        stop_words = stopwords.words("english")
+        def remove_stop_words(text):
+            words = [word for word in text.split() if word not in stop_words]
+            return " ".join(words)
+        df["text"] = df["text"].apply(remove_stop_words)
+        # Removal of HTML tags from the text
+        def remove_html_tags(text):
+            return bleach.clean(text, tags=[], strip=True)
+        df["text"] = df["text"].apply(remove_html_tags)
+        # Handle negations
+        def handle_negations(text):
+            negations = {"no", "not", "never", "none", "can't", "couldn't", "didn't", "doesn't", "don't", "isn't", "wasn't", "won't"}
+            words = text.split()
+            negated_words = [word for word in words if word in negations]
+            for word in negated_words:
+                index = words.index(word)
+                if index < len(words) - 1:
+                    words[index + 1] = f"NOT_{words[index + 1]}"
+            return " ".join(words)
+        df["text"] = df["text"].apply(handle_negations)
+        # Demojize the text
+        def convert_emojis(text):
+            return demojize(text)
+        df["text"] = df["text"].apply(convert_emojis)
+        # Perform word segmentation
+        def perform_word_segmentation(text):
+            tokens = nltk.word_tokenize(text)
+            segmented_words = ' '.join(tokens) 
+            return segmented_words
+        df['segmented_words'] = df["text"].apply(perform_word_segmentation)
+        # Lemmatization
+        lemmatizer = WordNetLemmatizer()
+        def lemmatize_text(segmented_words):
+            if pd.notna(segmented_words):
+                words = segmented_words.split()
+                lemmatized_words = [lemmatizer.lemmatize(word) for word in words]
+                return " ".join(lemmatized_words)
+            else:
+                return ""
+        df["segmented_words"] = df["segmented_words"].apply(lemmatize_text)
+        # Save the cleaned data
+        df.to_csv(output_file_path, index=False)
+    input_path = r"D:\RPP\SOCIAL TWEETS-CODE\social-tweets(10061).csv"
+    output_path = r"D:\RPP\SOCIAL TWEETS-CODE\pre_social_tweets2.csv"
+    preprocess_text_data(input_path, output_path)
